@@ -1,8 +1,13 @@
-# React + Vite
+### React Infinite Carousal with transition animation,
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# set up
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+npm install
+npm run dev
+```
+![Screenshot from 2024-02-24 22-50-49](https://github.com/iamsuryasonar/ReactImageCarousalCodeTutorial/assets/79869026/0ad7582a-56e2-49c2-8a1c-fb3c2242910f)
+
+
+![Screenshot from 2024-02-24 22-50-57](https://github.com/iamsuryasonar/ReactImageCarousalCodeTutorial/assets/79869026/8a60a93a-cef4-4bf3-a12c-5c0a878653b3)
