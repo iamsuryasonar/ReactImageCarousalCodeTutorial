@@ -12,9 +12,9 @@ function ImageCarousel({ images }) {
     const [startX, setStartX] = useState(null);
     const [swipeType, setSwipeType] = useState("");
     const [direction, setDirection] = useState(null);
-
     // carousal handlers
     const nextImageHandler = () => {
+
         setDirection(-1); // setting direction of item transition, in this case it is ascending order
 
         containerRef.current.style.justifyContent = 'flex-start';
@@ -75,6 +75,7 @@ function ImageCarousel({ images }) {
         setSwipeType("");
     };
 
+
     const handleTransitionEnd = () => {
         if (containerRef.current) {
 
@@ -101,11 +102,22 @@ function ImageCarousel({ images }) {
         }
     };
 
+    const jumpToHandler = (index) => {
+        if (index < currentImageIndex) {
+            prevImageHandler()
+        }
+
+        if (index > currentImageIndex) {
+            nextImageHandler()
+        }
+    }
+
     return (
         <div
             className="container"
             style={{
-                width: "100%",
+                width: "50%",
+                height: "100px",
                 margin: 'auto 40px',
                 border: '2px solid yellow'
             }}
@@ -129,6 +141,7 @@ function ImageCarousel({ images }) {
                     onTouchEnd={handleTouchEnd}
                     style={{
                         width: "100%",
+                        height: "100%",
                         display: "flex",
                         position: "relative",
                         transition: "all 700ms",
@@ -146,10 +159,25 @@ function ImageCarousel({ images }) {
                                     objectFit: "cover",
                                     width: "100%",
                                 }}
+                                onLoad={() => handleImageLoad(index)}
                             />
                         );
                     })}
                 </div>
+
+                {!loadedImages.includes(currentImageIndex) ? (
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            translate: "-50% -50%",
+                            color: "#FFFFFF",
+                        }}
+                    >loading...</div>
+                ) : (
+                    <></>
+                )}
 
                 <div className="controls">
                     <FontAwesomeIcon
@@ -192,6 +220,42 @@ function ImageCarousel({ images }) {
                         onClick={nextImageHandler}
                         icon={faCircleChevronRight}
                     />
+                </div>
+                <div style={{
+                    position: 'absolute',
+                    bottom: '10px',
+                    right: 0,
+                    left: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '10px'
+                }}>
+                    {images.map((_, index) => {
+                        return (
+                            <div
+                                key={index}
+                                style={{
+                                    width: "10px",
+                                    height: "10px",
+                                    boxShadow: "1px 1px 2px rgba(0,0,0,.9)",
+                                    borderRadius: "50%",
+                                    cursor: "pointer",
+                                    objectFit: "cover",
+                                    ...(currentImageIndex === index
+                                        ? {
+                                            border: "3px solid white",
+                                            backgroundColor: "#ffffff",
+                                        }
+                                        : {
+                                            border: "3px solid gray",
+                                        }),
+                                }}
+                                onClick={() => {
+                                    jumpToHandler(index);
+                                }}
+                            ></div>
+                        );
+                    })}
                 </div>
             </div>
         </div>
