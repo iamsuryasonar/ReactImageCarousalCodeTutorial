@@ -15,15 +15,16 @@ function ImageCarousel({ images }) {
     // carousal handlers
     const nextImageHandler = () => {
 
-        setDirection(-1); // setting direction of item transition, in this case it is ascending order
+        setDirection(1); // setting direction of item transition, in this case it is ascending order
 
         containerRef.current.style.justifyContent = 'flex-start';
         containerRef.current.style.transform = `translate(-100%)`;
-        setCurrentImageIndex((Math.abs(currentImageIndex + 1) % images.length));
+        containerRef.current.style.transition = 'transform 700ms ease-in-out';
+        setCurrentImageIndex(prev => (Math.abs(prev + 1) % images.length));
     };
 
     const prevImageHandler = () => {
-        if (direction === -1) {
+        if (direction === 1) {
 
             // while direction is changed justifyContent is set to flex-end 
             // which takes the whole array of divs as it is and places the end of it to the visible viewport (ie. the carousel div)
@@ -36,11 +37,12 @@ function ImageCarousel({ images }) {
             containerRef.current.appendChild(firstElement);
         }
 
-        setDirection(1);// setting direction of item transition, in this case it is decending order
+        setDirection(-1);// setting direction of item transition, in this case it is decending order
 
         containerRef.current.style.justifyContent = 'flex-end';
         containerRef.current.style.transform = `translate(100%)`;
-        setCurrentImageIndex(Math.abs((currentImageIndex - 1) % images.length));
+        containerRef.current.style.transition = 'transform 700ms ease-in-out';
+        setCurrentImageIndex(prev => (Math.abs((prev - 1 + images.length) % images.length)));
     };
 
     //image loading handler
@@ -54,6 +56,7 @@ function ImageCarousel({ images }) {
     };
 
     const handleTouchMove = (e) => {
+        console.log(e)
         if (startX === null) return;
         const currentX = e.touches[0].clientX;
         const diffX = currentX - startX;
@@ -82,23 +85,18 @@ function ImageCarousel({ images }) {
             const firstElement = containerRef.current.firstElementChild;// getting the first element
             const lastElement = containerRef.current.lastElementChild;// getting the last element
 
-            if (direction === -1 && firstElement) {
+            if (direction === 1 && firstElement) {
                 containerRef.current.appendChild(firstElement);
             }
 
-            if (direction === 1 && lastElement) {
+            if (direction === -1 && lastElement) {
                 containerRef.current.prepend(lastElement);
             }
 
             // translate needs reset after transition but without another transition
-            //  which is why transition is set to none
+            // which is why transition is set to none
             containerRef.current.style.transition = 'none';
             containerRef.current.style.transform = `translate(0)`;
-
-            setTimeout(() => {
-                // javascript tends to execute this transition too fast, so iykiyk
-                containerRef.current.style.transition = 'all 700ms ease-in-out'
-            });
         }
     };
 
